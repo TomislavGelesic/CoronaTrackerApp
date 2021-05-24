@@ -153,7 +153,7 @@ extension HomeScreenViewModel {
                 newDetails.append(newItem)
             }
             else {
-                let previousItem = responseItems[index - 1]
+                let previousItem = filteredResponseItems[index - 1]
                 var newItem = HomeScreenDomainItemDetail()
                 newItem.title = DateUtils.getDomainDetailItemDate(from: currentItem.date) ?? ""
                 newItem.confirmed = currentItem.confirmed - previousItem.confirmed
@@ -163,7 +163,7 @@ extension HomeScreenViewModel {
                 newDetails.append(newItem)
             }
         }
-        return newDetails.reversed()
+        return newDetails.reversed() as Array
     }
     
     func createDetails(from responseItems: [CountryStatus]) -> [HomeScreenDomainItemDetail] {
