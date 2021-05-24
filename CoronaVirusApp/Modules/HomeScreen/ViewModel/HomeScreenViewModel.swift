@@ -117,8 +117,7 @@ extension HomeScreenViewModel {
             screenData.recoveredDifferenceCount = totalStatsLast.recovered - totalStatsSecondToLast.recovered
             screenData.deathsTotalCount = totalStatsLast.deaths
             screenData.deathsDifferenceCount = totalStatsLast.deaths - totalStatsSecondToLast.deaths
-            let countryOnlyDayOneData: [CountryResponseItem] = dayOneStats.filter({ $0.province == "" }).reversed()
-            screenData.details = createDetails(from: countryOnlyDayOneData )
+            screenData.details = createDetails(from: dayOneStats)
             screenData.lastUpdateDate = Date()
         }
         return screenData
@@ -142,27 +141,29 @@ extension HomeScreenViewModel {
     
     func createDetails(from responseItems: [CountryResponseItem]) -> [HomeScreenDomainItemDetail] {
         var newDetails = [HomeScreenDomainItemDetail]()
-        for (index, responseItem) in responseItems.enumerated() {
+        let filteredResponseItems = responseItems.filter({ $0.province == "" })
+        for (index, currentItem) in filteredResponseItems.enumerated() {
             if index == 0 {
-                var item = HomeScreenDomainItemDetail()
-                item.title = DateUtils.getDomainDetailItemDate(from: responseItem.date) ?? ""
-                item.confirmed = responseItem.confirmed
-                item.recovered = responseItem.recovered
-                item.deaths = responseItem.deaths
-                item.active = responseItem.active
-                newDetails.append(item)
-            } else if index != responseItems.count - 1 {  // skip today data (same data on api for today and yesterday)
-                let previousResponseItem = responseItems[index - 1]
-                var item = HomeScreenDomainItemDetail()
-                item.title = DateUtils.getDomainDetailItemDate(from: responseItem.date) ?? ""
-                item.confirmed = responseItem.confirmed - previousResponseItem.confirmed
-                item.recovered = responseItem.recovered - previousResponseItem.recovered
-                item.deaths = responseItem.deaths - previousResponseItem.deaths
-                item.active = responseItem.active - previousResponseItem.active
-                newDetails.append(item)
+                var newItem = HomeScreenDomainItemDetail()
+                newItem.title = DateUtils.getDomainDetailItemDate(from: currentItem.date) ?? ""
+                newItem.confirmed = currentItem.confirmed
+                newItem.recovered = currentItem.recovered
+                newItem.deaths = currentItem.deaths
+                newItem.active = currentItem.active
+                newDetails.append(newItem)
+            }
+            else {
+                let previousItem = responseItems[index - 1]
+                var newItem = HomeScreenDomainItemDetail()
+                newItem.title = DateUtils.getDomainDetailItemDate(from: currentItem.date) ?? ""
+                newItem.confirmed = currentItem.confirmed - previousItem.confirmed
+                newItem.recovered = currentItem.recovered - previousItem.recovered
+                newItem.deaths = currentItem.deaths - previousItem.deaths
+                newItem.active = currentItem.active - previousItem.active
+                newDetails.append(newItem)
             }
         }
-        return newDetails
+        return newDetails.reversed()
     }
     
     func createDetails(from responseItems: [CountryStatus]) -> [HomeScreenDomainItemDetail] {
