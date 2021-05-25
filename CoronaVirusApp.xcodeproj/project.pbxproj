@@ -830,7 +830,6 @@
 			children = (
 				60311C4426442B14006DD857 /* HomeScreenDomainItemDetail.swift */,
 				60311C4526442B14006DD857 /* HomeScreenDomainItem.swift */,
-				60180024265563B900CD7515 /* LoadState.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1247,7 +1246,6 @@
 				02EA81262645D8DA0034A380 /* PaginationInformation.swift in Sources */,
 				02EA81292645D8DA0034A380 /* LatestNewsViewController.swift in Sources */,
 				02EA81222645D8DA0034A380 /* LatestNewsRepository.swift in Sources */,
-				60180025265563B900CD7515 /* LoadState.swift in Sources */,
 				02D5FB2F26492B4F004B6BA3 /* StatsDomainItemDetail.swift in Sources */,
 				60311C5926442B14006DD857 /* CountrySelectionViewModel.swift in Sources */,
 				60311BBF264428D0006DD857 /* UIImageView+Extensions.swift in Sources */,
@@ -1524,7 +1522,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = CoronaVirusAppTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1547,7 +1545,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = CoronaVirusAppTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
