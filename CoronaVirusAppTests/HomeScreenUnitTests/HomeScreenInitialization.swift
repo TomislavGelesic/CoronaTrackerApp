@@ -37,9 +37,15 @@ class HomeScreenInitialization: QuickSpec {
                     initialize()
                 }
                 it("Success screen initialized.") {
-                    let expected = 19
-                    sut.fetchScreenDataSubject.send(.country("croatia"))
-                    expect(sut.screenData.details.count).toEventually(equal(expected))
+                    let expectedDetailsCount:Int = 19
+                    let expectedDifferenceConfirmed:Int = 1435 // confirmed cases (7.5.21' - 6.5.21')
+                    let expectedTotalConfirmed:Int = 280164
+
+                    sut.fetchScreenDataSubject.send(.country(""))
+
+                    expect(sut.screenData.details.count).toEventually(equal(expectedDetailsCount))
+                    expect(sut.screenData.confirmedTotalCount).toEventually(equal(expectedTotalConfirmed))
+                    expect(sut.screenData.details.first?.confirmed).toEventually(equal(expectedDifferenceConfirmed))
                 }
             }
             
@@ -51,7 +57,7 @@ class HomeScreenInitialization: QuickSpec {
                 }
                 it("Fail screen initialized.") {
                     let expected = true
-                    sut.fetchScreenDataSubject.send(.country("croatia"))
+                    sut.fetchScreenDataSubject.send(.country(""))
                     expect(failurePathCalled).toEventually(equal(expected))
                 }
             }
@@ -62,9 +68,17 @@ class HomeScreenInitialization: QuickSpec {
                     initialize()
                 }
                 it("Success screen initialized.") {
-                    let expected = 3
+                    let expectedDetailsCount:Int = 3
+                    let expectedDifferenceConfirmed:Int = 198996
+                    let expectedTotalConfirmed:Int = 131539636
+                    let expectedTopDetailConfirmed:Int = 126795
+
                     sut.fetchScreenDataSubject.send(.worldwide)
-                    expect(sut.screenData.details.count).toEventually(equal(expected))
+                    
+                    expect(sut.screenData.details.count).toEventually(equal(expectedDetailsCount))
+                    expect(sut.screenData.confirmedDifferenceCount).toEventually(equal(expectedDifferenceConfirmed))
+                    expect(sut.screenData.confirmedTotalCount).toEventually(equal(expectedTotalConfirmed))
+                    expect(sut.screenData.details.first?.confirmed).toEventually(equal(expectedTopDetailConfirmed))
                 }
             }
             

@@ -177,7 +177,7 @@ extension HomeScreenViewModel {
             item.active = responseItem.totalConfirmed - responseItem.totalRecovered
             newDetails.append(item)
         }
-        return newDetails
+        return newDetails.sorted { $0.confirmed > $1.confirmed }
     }
     
     func createSuccessPublisher(_ data: HomeScreenDomainItem) -> AnyPublisher<Result<HomeScreenDomainItem, ErrorType>, Never> {
