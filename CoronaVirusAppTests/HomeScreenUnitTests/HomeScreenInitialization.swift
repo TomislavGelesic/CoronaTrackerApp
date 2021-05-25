@@ -43,10 +43,10 @@ class HomeScreenInitialization: QuickSpec {
                     
                     sut.fetchScreenDataSubject.send(.country(""))
                     
-                    expect(sut.screenData.details.count).toEventually(equal(expectedDetailsCount))
-                    expect(sut.screenData.confirmedTotalCount).toEventually(equal(expectedTotalConfirmed))
-                    expect(sut.screenData.details.first).toEventuallyNot(beNil())
-                    expect(sut.screenData.details.first?.confirmed).toEventually(equal(expectedTopDetailConfirmed))
+                    expect(sut.screenData.details.count).toEventually(equal(expectedDetailsCount), timeout: .seconds(5))
+                    expect(sut.screenData.confirmedTotalCount).toEventually(equal(expectedTotalConfirmed), timeout: .seconds(2))
+                    expect(sut.screenData.details.first).toEventuallyNot(beNil(), timeout: .seconds(2))
+                    expect(sut.screenData.details.first?.confirmed).toEventually(equal(expectedTopDetailConfirmed), timeout: .seconds(2))
                 }
             }
             
@@ -76,11 +76,11 @@ class HomeScreenInitialization: QuickSpec {
                     
                     sut.fetchScreenDataSubject.send(.worldwide)
                     
-                    expect(sut.screenData.details.count).toEventually(equal(expectedDetailsCount))
-                    expect(sut.screenData.confirmedDifferenceCount).toEventually(equal(expectedDifferenceConfirmed))
-                    expect(sut.screenData.confirmedTotalCount).toEventually(equal(expectedTotalConfirmed))
-                    expect(sut.screenData.details.first).toEventuallyNot(beNil())
-                    expect(sut.screenData.details.first?.confirmed).toEventually(equal(expectedTopDetailConfirmed))
+                    expect(sut.screenData.details.count).toEventually(equal(expectedDetailsCount), timeout: .seconds(2))
+                    expect(sut.screenData.confirmedDifferenceCount).toEventually(equal(expectedDifferenceConfirmed), timeout: .seconds(2))
+                    expect(sut.screenData.confirmedTotalCount).toEventually(equal(expectedTotalConfirmed), timeout: .seconds(2))
+                    expect(sut.screenData.details.first).toEventuallyNot(beNil(), timeout: .seconds(2))
+                    expect(sut.screenData.details.first?.confirmed).toEventually(equal(expectedTopDetailConfirmed), timeout: .seconds(2))
                 }
             }
             

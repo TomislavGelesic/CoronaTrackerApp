@@ -98,6 +98,7 @@
 		60311C6F26442B14006DD857 /* HomeScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60311C5026442B14006DD857 /* HomeScreenCoordinator.swift */; };
 		60311C7226442B14006DD857 /* PageComingSoonCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60311C5626442B14006DD857 /* PageComingSoonCoordinator.swift */; };
 		60311C7326442B14006DD857 /* PageComingSoonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60311C5826442B14006DD857 /* PageComingSoonViewController.swift */; };
+		6033D316265D425B0080AF7E /* GeneratedMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6033D315265D425B0080AF7E /* GeneratedMocks.swift */; };
 		603F2A1B264F01DC00264779 /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603F2A1A264F01DC00264779 /* EmptyView.swift */; };
 		60438DD4264E6D880064CC0B /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60438DD3264E6D880064CC0B /* UIColor+Extensions.swift */; };
 		60438DD6264E87180064CC0B /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60438DD5264E87180064CC0B /* UIImage+Extensions.swift */; };
@@ -110,7 +111,6 @@
 		60AEFFE02644364E0074B2C3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60AEFFDC2644364E0074B2C3 /* Assets.xcassets */; };
 		60ED183226473E8E007FEBB7 /* HomeScreenUserInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ED182D26473E8E007FEBB7 /* HomeScreenUserInteraction.swift */; };
 		60ED183326473E8E007FEBB7 /* HomeScreenInitialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ED182E26473E8E007FEBB7 /* HomeScreenInitialization.swift */; };
-		60ED183426473E8E007FEBB7 /* GeneratedMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ED182F26473E8E007FEBB7 /* GeneratedMocks.swift */; };
 		60ED183526473E8E007FEBB7 /* CountrySelectionViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ED183126473E8E007FEBB7 /* CountrySelectionViewModelTest.swift */; };
 		60ED183726473F60007FEBB7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60ED183626473F60007FEBB7 /* LaunchScreen.storyboard */; };
 		60ED183C2647403E007FEBB7 /* Covid19CountryStats.json in Resources */ = {isa = PBXBuildFile; fileRef = 60ED18392647403E007FEBB7 /* Covid19CountryStats.json */; };
@@ -230,6 +230,7 @@
 		60311C5026442B14006DD857 /* HomeScreenCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeScreenCoordinator.swift; sourceTree = "<group>"; };
 		60311C5626442B14006DD857 /* PageComingSoonCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageComingSoonCoordinator.swift; sourceTree = "<group>"; };
 		60311C5826442B14006DD857 /* PageComingSoonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageComingSoonViewController.swift; sourceTree = "<group>"; };
+		6033D315265D425B0080AF7E /* GeneratedMocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneratedMocks.swift; sourceTree = "<group>"; };
 		603F2A1A264F01DC00264779 /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 		60438DD3264E6D880064CC0B /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		60438DD5264E87180064CC0B /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
@@ -244,7 +245,6 @@
 		60AEFFDC2644364E0074B2C3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		60ED182D26473E8E007FEBB7 /* HomeScreenUserInteraction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeScreenUserInteraction.swift; sourceTree = "<group>"; };
 		60ED182E26473E8E007FEBB7 /* HomeScreenInitialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeScreenInitialization.swift; sourceTree = "<group>"; };
-		60ED182F26473E8E007FEBB7 /* GeneratedMocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneratedMocks.swift; sourceTree = "<group>"; };
 		60ED183126473E8E007FEBB7 /* CountrySelectionViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountrySelectionViewModelTest.swift; sourceTree = "<group>"; };
 		60ED183626473F60007FEBB7 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		60ED18392647403E007FEBB7 /* Covid19CountryStats.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Covid19CountryStats.json; sourceTree = "<group>"; };
@@ -607,8 +607,8 @@
 		602F4C742600CB870034A798 /* CoronaVirusAppTests */ = {
 			isa = PBXGroup;
 			children = (
+				6033D315265D425B0080AF7E /* GeneratedMocks.swift */,
 				601C2F2D26565A89000C9D42 /* StatsScreenUnitTests */,
-				60ED182F26473E8E007FEBB7 /* GeneratedMocks.swift */,
 				60536576265652B40024FC91 /* LatestNewsUnitTests */,
 				60ED18382647403E007FEBB7 /* JSONMocks */,
 				60ED183026473E8E007FEBB7 /* CountrySelectionUnitTests */,
@@ -1329,11 +1329,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6033D316265D425B0080AF7E /* GeneratedMocks.swift in Sources */,
 				60ED183526473E8E007FEBB7 /* CountrySelectionViewModelTest.swift in Sources */,
 				60536578265652C80024FC91 /* LatestNewsViewModelTest.swift in Sources */,
 				601C2F2F26565AAA000C9D42 /* StatisticsScreenInitialization.swift in Sources */,
 				60ED183326473E8E007FEBB7 /* HomeScreenInitialization.swift in Sources */,
-				60ED183426473E8E007FEBB7 /* GeneratedMocks.swift in Sources */,
 				60ED183226473E8E007FEBB7 /* HomeScreenUserInteraction.swift in Sources */,
 				025AF80026455EC9009081AD /* LatestNewsGeneratedMocks.swift in Sources */,
 			);
