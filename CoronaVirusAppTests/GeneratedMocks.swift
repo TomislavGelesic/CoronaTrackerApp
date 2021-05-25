@@ -1,4 +1,4 @@
-// MARK: - Mocks generated from file: CoronaVirusApp/Common/Networking/Repositories/Covid19RepositoryImpl.swift at 2021-05-25 08:34:01 +0000
+// MARK: - Mocks generated from file: CoronaVirusApp/Common/Networking/Repositories/Covid19RepositoryImpl.swift at 2021-05-25 12:19:10 +0000
 
 
 import Cuckoo
@@ -188,7 +188,7 @@ import Foundation
 }
 
 
-// MARK: - Mocks generated from file: CoronaVirusApp/Modules/HomeScreen/Coordinators/HomeScreenCoordinatorImpl.swift at 2021-05-25 08:34:01 +0000
+// MARK: - Mocks generated from file: CoronaVirusApp/Modules/HomeScreen/Coordinators/HomeScreenCoordinatorImpl.swift at 2021-05-25 12:19:10 +0000
 
 
 import Cuckoo
@@ -523,7 +523,7 @@ import UIKit
 }
 
 
-// MARK: - Mocks generated from file: CoronaVirusApp/Modules/LatestNews/ViewModel/LatestNewsViewModel.swift at 2021-05-25 08:34:01 +0000
+// MARK: - Mocks generated from file: CoronaVirusApp/Modules/LatestNews/ViewModel/LatestNewsViewModel.swift at 2021-05-25 12:19:10 +0000
 
 //
 //  LatestNewsViewModel.swift
@@ -863,7 +863,7 @@ import Foundation
 }
 
 
-// MARK: - Mocks generated from file: CoronaVirusApp/Modules/StatisticsScreen/Coordinator/StatisticsScreenCoordinator.swift at 2021-05-25 08:34:01 +0000
+// MARK: - Mocks generated from file: CoronaVirusApp/Modules/StatisticsScreen/Coordinator/StatisticsScreenCoordinator.swift at 2021-05-25 12:19:10 +0000
 
 
 import Cuckoo

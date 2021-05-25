@@ -37,15 +37,16 @@ class HomeScreenInitialization: QuickSpec {
                     initialize()
                 }
                 it("Success screen initialized.") {
-                    let expectedDetailsCount:Int = 19
-                    let expectedDifferenceConfirmed:Int = 1435 // confirmed cases (7.5.21' - 6.5.21')
+                    let expectedDetailsCount:Int = 20
+                    let expectedTopDetailConfirmed:Int = 0 // confirmed cases (7.5.21' - 6.5.21')
                     let expectedTotalConfirmed:Int = 280164
-
+                    
                     sut.fetchScreenDataSubject.send(.country(""))
-
+                    
                     expect(sut.screenData.details.count).toEventually(equal(expectedDetailsCount))
                     expect(sut.screenData.confirmedTotalCount).toEventually(equal(expectedTotalConfirmed))
-                    expect(sut.screenData.details.first?.confirmed).toEventually(equal(expectedDifferenceConfirmed))
+                    expect(sut.screenData.details.first).toEventuallyNot(beNil())
+                    expect(sut.screenData.details.first?.confirmed).toEventually(equal(expectedTopDetailConfirmed))
                 }
             }
             
@@ -58,7 +59,7 @@ class HomeScreenInitialization: QuickSpec {
                 it("Fail screen initialized.") {
                     let expected = true
                     sut.fetchScreenDataSubject.send(.country(""))
-                    expect(failurePathCalled).toEventually(equal(expected))
+                    expect(failurePathCalled).toEventually(equal(expected), timeout: .seconds(2))
                 }
             }
             
@@ -72,12 +73,13 @@ class HomeScreenInitialization: QuickSpec {
                     let expectedDifferenceConfirmed:Int = 198996
                     let expectedTotalConfirmed:Int = 131539636
                     let expectedTopDetailConfirmed:Int = 126795
-
+                    
                     sut.fetchScreenDataSubject.send(.worldwide)
                     
                     expect(sut.screenData.details.count).toEventually(equal(expectedDetailsCount))
                     expect(sut.screenData.confirmedDifferenceCount).toEventually(equal(expectedDifferenceConfirmed))
                     expect(sut.screenData.confirmedTotalCount).toEventually(equal(expectedTotalConfirmed))
+                    expect(sut.screenData.details.first).toEventuallyNot(beNil())
                     expect(sut.screenData.details.first?.confirmed).toEventually(equal(expectedTopDetailConfirmed))
                 }
             }
@@ -90,15 +92,18 @@ class HomeScreenInitialization: QuickSpec {
                 it("Fail screen initialized.") {
                     let expected = true
                     sut.fetchScreenDataSubject.send(.worldwide)
-                    expect(failurePathCalled).toEventually(equal(expected))
+                    expect(failurePathCalled).toEventually(equal(expected), timeout: .seconds(2))
                 }
             }
         }
         func initialize() {
             sut = HomeScreenViewModel(repository: mock)
+            
             sut.initializeFetchScreenDataSubject(sut.fetchScreenDataSubject)
                 .store(in: &disposeBag)
+            
             sut.errorSubject
+                .receive(on: RunLoop.main)
                 .sink { (_) in failurePathCalled = true }
                 .store(in: &disposeBag)
         }

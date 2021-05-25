@@ -40,9 +40,9 @@ class CountrySelectionViewModelTest: QuickSpec {
                 it("Screeen initalized") {
                     viewModel.loadData.send(false)
                     expect(viewModel.screenData.count).toEventually(equal(249))
-                    expect(viewModel.screenData[0].content).toEventually(equal("Worldwide"))
-                    expect(viewModel.screenData[1].content).toEventually(equal("ALA Aland Islands"))
-                    expect(viewModel.screenData[2].content).toEventually(equal("Afghanistan"))
+                    expect(viewModel.screenData[0].content).toEventually(equal("Worldwide"), timeout: .seconds(2))
+                    expect(viewModel.screenData[1].content).toEventually(equal("ALA Aland Islands"), timeout: .seconds(2))
+                    expect(viewModel.screenData[2].content).toEventually(equal("Afghanistan"), timeout: .seconds(2))
                 }
             }
             

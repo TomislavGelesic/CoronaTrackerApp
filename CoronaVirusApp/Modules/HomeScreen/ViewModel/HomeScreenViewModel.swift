@@ -53,8 +53,8 @@ extension HomeScreenViewModel {
     }
     
     func getCountryData(name countryName: String) -> AnyPublisher<Result<HomeScreenDomainItem, ErrorType>, Never> {
-        return Publishers.Zip(repository.getCountryStats(for: countryName),
-                              repository.getCountryStatsTotal(for: countryName))
+        return Publishers.Zip(repository.getCountryStatsTotal(for: countryName),
+                              repository.getCountryStats(for: countryName))
             .flatMap { (totalResponse, dayOneResponse ) -> AnyPublisher<Result<HomeScreenDomainItem, ErrorType>, Never> in
                 var totalData = [CountryResponseItem]()
                 var dayOneData = [CountryResponseItem]()
@@ -73,8 +73,6 @@ extension HomeScreenViewModel {
     
     func getWorldwideData() -> AnyPublisher<Result<HomeScreenDomainItem, ErrorType>, Never> {
         return repository.getWorldwideData()
-            .subscribe(on: DispatchQueue.global(qos: .background))
-            .receive(on: RunLoop.main)
             .flatMap { (result) -> AnyPublisher<Result<HomeScreenDomainItem, ErrorType>, Never> in
                 switch result {
                 case .success(let worldwideResponse):
