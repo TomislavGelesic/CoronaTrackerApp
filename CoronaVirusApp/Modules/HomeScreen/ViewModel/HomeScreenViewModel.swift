@@ -7,7 +7,7 @@ class HomeScreenViewModel: NSObject, ErrorableViewModel, LoaderViewModel {
     
     var coordinator: HomeScreenCoordinatorImpl?
     var repository: Covid19Repository
-    var screenData = HomeScreenDomainItem()
+    var screenData: HomeScreenDomainItem = .init()
     var loaderPublisher = CurrentValueSubject<Bool, Never>(true)
     var errorSubject = PassthroughSubject<ErrorType?, Never>()
     var updateScreenSubject = PassthroughSubject<Bool, Never>()
@@ -66,7 +66,7 @@ extension HomeScreenViewModel {
                 case .success(let data): dayOneData = data
                 case .failure(let error): return self.createFailurePublisher(error)
                 }
-                let newScreenData = self.createScreenData(from: totalData, and: dayOneData)
+                let newScreenData = self.createCountryScreenData(from: totalData, and: dayOneData)
                 return self.createSuccessPublisher(newScreenData)
             }.eraseToAnyPublisher()
     }
@@ -76,7 +76,7 @@ extension HomeScreenViewModel {
             .flatMap { (result) -> AnyPublisher<Result<HomeScreenDomainItem, ErrorType>, Never> in
                 switch result {
                 case .success(let worldwideResponse):
-                    let newScreenData: HomeScreenDomainItem = self.createScreenData(from: worldwideResponse)
+                    let newScreenData: HomeScreenDomainItem = self.createWorldwideScreenData(from: worldwideResponse)
                     return self.createSuccessPublisher(newScreenData)
                 case .failure(let error):
                     return self.createFailurePublisher(error)
@@ -97,85 +97,12 @@ extension HomeScreenViewModel {
         loaderPublisher.send(false)
     }
     
-    func createScreenData(from totalStats: [CountryResponseItem], and dayOneStats: [CountryResponseItem]) -> HomeScreenDomainItem {
-        var screenData = HomeScreenDomainItem()
-        if totalStats.count > 2,
-            dayOneStats.count > 2 {
-            
-            let lastTwoTotalStats = totalStats.suffix(2) as Array
-            let totalStatsSecondToLast = lastTwoTotalStats[0]
-            let totalStatsLast = lastTwoTotalStats[1]
-            
-            screenData.title = totalStatsLast.country
-            screenData.confirmedTotalCount = totalStatsLast.confirmed
-            screenData.confirmedDifferenceCount = totalStatsLast.confirmed - totalStatsSecondToLast.confirmed
-            screenData.activeTotalCount = totalStatsLast.active
-            screenData.activeDifferenceCount = totalStatsLast.active - totalStatsSecondToLast.active
-            screenData.recoveredTotalCount = totalStatsLast.recovered
-            screenData.recoveredDifferenceCount = totalStatsLast.recovered - totalStatsSecondToLast.recovered
-            screenData.deathsTotalCount = totalStatsLast.deaths
-            screenData.deathsDifferenceCount = totalStatsLast.deaths - totalStatsSecondToLast.deaths
-            screenData.details = createDetails(from: dayOneStats)
-            screenData.lastUpdateDate = Date()
-        }
-        return screenData
+    func createCountryScreenData(from totalStats: [CountryResponseItem], and dayOneStats: [CountryResponseItem]) -> HomeScreenDomainItem {
+        return HomeScreenDomainItem(totalStatsResponse: totalStats, dayOneStatsResponse: dayOneStats)
     }
     
-    func createScreenData(from item: WorldwideResponseItem) -> HomeScreenDomainItem {
-        var screenData = HomeScreenDomainItem()
-        screenData.title = "Worldwide"
-        screenData.confirmedTotalCount = item.global.totalConfirmed
-        screenData.confirmedDifferenceCount = item.global.newConfirmed
-        screenData.recoveredTotalCount = item.global.totalRecovered
-        screenData.recoveredDifferenceCount = item.global.newRecovered
-        screenData.deathsTotalCount = item.global.totalDeaths
-        screenData.deathsDifferenceCount = item.global.newDeaths
-        screenData.activeTotalCount = screenData.confirmedTotalCount - screenData.recoveredTotalCount
-        screenData.activeDifferenceCount = screenData.confirmedDifferenceCount - screenData.recoveredDifferenceCount
-        screenData.details = createDetails(from: item.countries)
-        screenData.lastUpdateDate = Date()
-        return screenData
-    }
-    
-    func createDetails(from responseItems: [CountryResponseItem]) -> [HomeScreenDomainItemDetail] {
-        var newDetails = [HomeScreenDomainItemDetail]()
-        let filteredResponseItems = responseItems.filter({ $0.province == "" })
-        for (index, currentItem) in filteredResponseItems.enumerated() {
-            if index == 0 {
-                var newItem = HomeScreenDomainItemDetail()
-                newItem.title = DateUtils.getDomainDetailItemDate(from: currentItem.date) ?? ""
-                newItem.confirmed = currentItem.confirmed
-                newItem.recovered = currentItem.recovered
-                newItem.deaths = currentItem.deaths
-                newItem.active = currentItem.active
-                newDetails.append(newItem)
-            }
-            else {
-                let previousItem = filteredResponseItems[index - 1]
-                var newItem = HomeScreenDomainItemDetail()
-                newItem.title = DateUtils.getDomainDetailItemDate(from: currentItem.date) ?? ""
-                newItem.confirmed = currentItem.confirmed - previousItem.confirmed
-                newItem.recovered = currentItem.recovered - previousItem.recovered
-                newItem.deaths = currentItem.deaths - previousItem.deaths
-                newItem.active = currentItem.active - previousItem.active
-                newDetails.append(newItem)
-            }
-        }
-        return newDetails.reversed() as Array
-    }
-    
-    func createDetails(from responseItems: [CountryStatus]) -> [HomeScreenDomainItemDetail] {
-        var newDetails = [HomeScreenDomainItemDetail]()
-        for responseItem in responseItems {
-            var item = HomeScreenDomainItemDetail()
-            item.title = responseItem.countryName
-            item.confirmed = responseItem.totalConfirmed
-            item.recovered = responseItem.totalRecovered
-            item.deaths = responseItem.totalDeaths
-            item.active = responseItem.totalConfirmed - responseItem.totalRecovered
-            newDetails.append(item)
-        }
-        return newDetails.sorted { $0.confirmed > $1.confirmed }
+    func createWorldwideScreenData(from item: WorldwideResponseItem) -> HomeScreenDomainItem {
+        return HomeScreenDomainItem(item)
     }
     
     func createSuccessPublisher(_ data: HomeScreenDomainItem) -> AnyPublisher<Result<HomeScreenDomainItem, ErrorType>, Never> {

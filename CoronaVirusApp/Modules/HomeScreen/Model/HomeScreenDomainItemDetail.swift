@@ -17,4 +17,12 @@ struct HomeScreenDomainItemDetail {
         self.deaths = deaths
     }
     
+    init(_ item: CountryResponseItem) {
+        self.title = item.country
+        self.confirmed = item.confirmed
+        self.active = item.active
+        self.recovered = item.recovered
+        self.deaths = item.deaths
+    }
+    
 }
