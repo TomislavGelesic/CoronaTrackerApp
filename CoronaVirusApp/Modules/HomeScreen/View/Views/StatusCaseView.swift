@@ -77,24 +77,20 @@ class StatusCaseView: UIView {
     
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    func configure(totalCount: Int, differenceCount: Int, color: UIColor) {
+    func configure(with item: StatsData) {
         var arrowImage: UIImage? = .init()
         var graphImage: UIImage? = .init()
-        if differenceCount > 0 {
+        if item.delta > 0 {
             graphImage = UIImage(named: "graph-up-homescreen")
             arrowImage = UIImage(systemName: "arrow.up")
         } else {
             graphImage = UIImage(named: "graph-down-homescreen")
             arrowImage = UIImage(systemName: "arrow.down")
         }
-        differenceCountLabel.text = "\(NumberUtils.getPositiveNumberWithMetricPrefixSymbol(differenceCount))"
-        totalCountLabel.text = "\(NumberUtils.getPositiveNumberWithMetricPrefixSymbol(totalCount))"
-        totalCountLabel.textColor = color
-        differenceCountLabel.textColor = color
+        differenceCountLabel.text = "\(NumberUtils.getPositiveNumberWithMetricPrefixSymbol(item.delta))"
+        totalCountLabel.text = "\(NumberUtils.getPositiveNumberWithMetricPrefixSymbol(item.value))"
         differenceArrowImageView.image = arrowImage
-        differenceArrowImageView.tintColor = color
         graphImageView.image = graphImage
-        graphImageView.tintColor = color
     }
     
     func setConstraints() {

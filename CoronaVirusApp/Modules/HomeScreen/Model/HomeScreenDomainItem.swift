@@ -4,58 +4,56 @@ import Foundation
 struct HomeScreenDomainItem {
     
     var title: String = ""
-    var confirmedTotalCount: Int = 0, confirmedDifferenceCount: Int = 0
-    var activeTotalCount: Int = 0, activeDifferenceCount: Int = 0
-    var recoveredTotalCount: Int = 0, recoveredDifferenceCount: Int = 0
-    var deathsTotalCount: Int = 0, deathsDifferenceCount: Int = 0
+    var stats: [StatsData] = .init()
     var details: [HomeScreenDomainItemDetail] = [HomeScreenDomainItemDetail]()
     var lastUpdateDate: Date = .init()
     
     
-    init(title: String = "", confirmedTotalCount: Int = 0, confirmedDifferenceCount: Int = 0, activeTotalCount: Int = 0, activeDifferenceCount: Int = 0, recoveredTotalCount: Int = 0, recoveredDifferenceCount: Int = 0, deathsTotalCount: Int = 0, deathsDifferenceCount: Int = 0, details: [HomeScreenDomainItemDetail] = [HomeScreenDomainItemDetail](), lastUpdateDate: Date = .init()) {
+    init(title: String = "", stats: [StatsData] = .init(), details: [HomeScreenDomainItemDetail] = [HomeScreenDomainItemDetail](), lastUpdateDate: Date = .init()) {
         self.title = title
-        self.confirmedTotalCount = confirmedTotalCount
-        self.confirmedDifferenceCount = confirmedDifferenceCount
-        self.activeTotalCount = activeTotalCount
-        self.activeDifferenceCount = activeDifferenceCount
-        self.recoveredTotalCount = recoveredTotalCount
-        self.recoveredDifferenceCount = recoveredDifferenceCount
-        self.deathsTotalCount = deathsTotalCount
-        self.deathsDifferenceCount = deathsDifferenceCount
+        self.stats = stats
         self.details = details
         self.lastUpdateDate = lastUpdateDate
     }
     
     init(totalStatsResponse: [CountryResponseItem], dayOneStatsResponse: [CountryResponseItem]) {
-        
         let lastTwoTotalStats = totalStatsResponse.suffix(2) as Array
         let totalStatsSecondToLast = lastTwoTotalStats[0]
         let totalStatsLast = lastTwoTotalStats[1]
         title = totalStatsLast.country
-        confirmedTotalCount = totalStatsLast.confirmed
-        confirmedDifferenceCount = totalStatsLast.confirmed - totalStatsSecondToLast.confirmed
-        activeTotalCount = totalStatsLast.active
-        activeDifferenceCount = totalStatsLast.active - totalStatsSecondToLast.active
-        recoveredTotalCount = totalStatsLast.recovered
-        recoveredDifferenceCount = totalStatsLast.recovered - totalStatsSecondToLast.recovered
-        deathsTotalCount = totalStatsLast.deaths
-        deathsDifferenceCount = totalStatsLast.deaths - totalStatsSecondToLast.deaths
+        stats = createStats(confirmedTotalCount: totalStatsLast.confirmed,
+                            confirmedDifferenceCount: totalStatsLast.confirmed - totalStatsSecondToLast.confirmed,
+                            activeTotalCount: totalStatsLast.active,
+                            activeDifferenceCount: totalStatsLast.active - totalStatsSecondToLast.active,
+                            recoveredTotalCount: totalStatsLast.recovered,
+                            recoveredDifferenceCount: totalStatsLast.recovered - totalStatsSecondToLast.recovered,
+                            deathsTotalCount: totalStatsLast.deaths,
+                            deathsDifferenceCount: totalStatsLast.deaths - totalStatsSecondToLast.deaths)
         details = createCountryDetails(from: dayOneStatsResponse)
         lastUpdateDate = Date()
     }
     
     init(_ item: WorldwideResponseItem) {
         title = "Worldwide"
-        confirmedTotalCount = item.global.totalConfirmed
-        confirmedDifferenceCount = item.global.newConfirmed
-        activeTotalCount = item.global.totalConfirmed - item.global.totalRecovered
-        activeDifferenceCount = item.global.newConfirmed - item.global.newRecovered
-        recoveredTotalCount = item.global.totalRecovered
-        recoveredDifferenceCount = item.global.newRecovered
-        deathsTotalCount = item.global.totalDeaths
-        deathsDifferenceCount = item.global.newDeaths
+        stats = createStats(confirmedTotalCount: item.global.totalConfirmed,
+                            confirmedDifferenceCount:  item.global.newConfirmed,
+                            activeTotalCount: item.global.totalConfirmed - item.global.totalRecovered,
+                            activeDifferenceCount: item.global.newConfirmed - item.global.newRecovered,
+                            recoveredTotalCount: item.global.totalRecovered,
+                            recoveredDifferenceCount: item.global.newRecovered,
+                            deathsTotalCount: item.global.totalDeaths,
+                            deathsDifferenceCount: item.global.newDeaths)
         details = createWorldwideDetails(from: item.countries)
         lastUpdateDate = Date()
+    }
+    
+    private func createStats(confirmedTotalCount: Int, confirmedDifferenceCount: Int, activeTotalCount: Int, activeDifferenceCount: Int, recoveredTotalCount: Int, recoveredDifferenceCount: Int, deathsTotalCount: Int, deathsDifferenceCount: Int) -> [StatsData] {
+        var newStats = [StatsData]()
+        newStats.append(StatsData(type: .confirmed, value: confirmedTotalCount, delta: confirmedDifferenceCount))
+        newStats.append(StatsData(type: .active, value: activeTotalCount, delta: activeDifferenceCount))
+        newStats.append(StatsData(type: .recovered, value: recoveredTotalCount, delta: recoveredDifferenceCount))
+        newStats.append(StatsData(type: .deaths, value: deathsTotalCount, delta: deathsDifferenceCount))
+        return newStats
     }
     
     private func createCountryDetails(from responseItems: [CountryResponseItem]) -> [HomeScreenDomainItemDetail] {

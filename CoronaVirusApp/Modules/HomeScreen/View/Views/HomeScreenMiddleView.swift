@@ -72,10 +72,15 @@ class HomeScreenMiddleView: UIView {
 extension HomeScreenMiddleView {
     
     func update(with data: HomeScreenDomainItem) {
-        confirmedCaseView.configure(totalCount: data.confirmedTotalCount, differenceCount: data.confirmedDifferenceCount, color: .systemRed)
-        activeCaseView.configure(totalCount: data.activeTotalCount, differenceCount: data.activeDifferenceCount, color: .systemBlue)
-        recoveredCaseView.configure(totalCount: data.recoveredTotalCount, differenceCount: data.recoveredDifferenceCount, color: .systemGreen)
-        deathsCaseView.configure(totalCount: data.deathsTotalCount, differenceCount: data.deathsDifferenceCount, color: .systemGray)
+        guard let confirmedData = data.stats.first(where: { $0.type == .confirmed }),
+              let activeData = data.stats.first(where: { $0.type == .active }),
+              let recoveredData = data.stats.first(where: { $0.type == .recovered }),
+              let deathsData = data.stats.first(where: { $0.type == .deaths })
+        else { return }
+        confirmedCaseView.configure(with: confirmedData)
+        activeCaseView.configure(with: activeData)
+        recoveredCaseView.configure(with: recoveredData)
+        deathsCaseView.configure(with: deathsData)
     }
     
     func setViews() {
