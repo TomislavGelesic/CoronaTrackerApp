@@ -21,30 +21,42 @@ struct HomeScreenDomainItem {
         let totalStatsSecondToLast = lastTwoTotalStats[0]
         let totalStatsLast = lastTwoTotalStats[1]
         title = totalStatsLast.country
-        stats = createStats(confirmedTotalCount: totalStatsLast.confirmed,
-                            confirmedDifferenceCount: totalStatsLast.confirmed - totalStatsSecondToLast.confirmed,
-                            activeTotalCount: totalStatsLast.active,
-                            activeDifferenceCount: totalStatsLast.active - totalStatsSecondToLast.active,
-                            recoveredTotalCount: totalStatsLast.recovered,
-                            recoveredDifferenceCount: totalStatsLast.recovered - totalStatsSecondToLast.recovered,
-                            deathsTotalCount: totalStatsLast.deaths,
-                            deathsDifferenceCount: totalStatsLast.deaths - totalStatsSecondToLast.deaths)
+        stats = createStats(from: totalStatsLast, and: totalStatsSecondToLast)
         details = createCountryDetails(from: dayOneStatsResponse)
         lastUpdateDate = Date()
     }
     
     init(_ item: WorldwideResponseItem) {
         title = "Worldwide"
-        stats = createStats(confirmedTotalCount: item.global.totalConfirmed,
-                            confirmedDifferenceCount:  item.global.newConfirmed,
-                            activeTotalCount: item.global.totalConfirmed - item.global.totalRecovered,
-                            activeDifferenceCount: item.global.newConfirmed - item.global.newRecovered,
-                            recoveredTotalCount: item.global.totalRecovered,
-                            recoveredDifferenceCount: item.global.newRecovered,
-                            deathsTotalCount: item.global.totalDeaths,
-                            deathsDifferenceCount: item.global.newDeaths)
+        stats = createStats(from: item)
         details = createWorldwideDetails(from: item.countries)
         lastUpdateDate = Date()
+    }
+    
+    private func createStats(from last: CountryResponseItem, and secondToLast: CountryResponseItem) -> [StatsData] {
+        var newStats = [StatsData]()
+        newStats.append(StatsData(type: .confirmed, value: last.confirmed,
+                                  delta: last.confirmed - secondToLast.confirmed))
+        newStats.append(StatsData(type: .active, value: last.active,
+                                  delta: last.active - secondToLast.active))
+        newStats.append(StatsData(type: .recovered, value: last.recovered,
+                                  delta: last.recovered - secondToLast.recovered))
+        newStats.append(StatsData(type: .deaths, value: last.deaths,
+                                  delta: last.deaths - secondToLast.deaths))
+        return newStats
+    }
+    
+    private func createStats(from item: WorldwideResponseItem) -> [StatsData] {
+        var newStats = [StatsData]()
+        newStats.append(StatsData(type: .confirmed, value: item.global.totalConfirmed,
+                                  delta: item.global.newConfirmed))
+        newStats.append(StatsData(type: .active, value: item.global.totalConfirmed - item.global.totalRecovered,
+                                  delta: item.global.newConfirmed - item.global.newRecovered))
+        newStats.append(StatsData(type: .recovered, value: item.global.totalRecovered,
+                                  delta: item.global.newRecovered))
+        newStats.append(StatsData(type: .deaths, value: item.global.totalDeaths,
+                                  delta: item.global.newDeaths))
+        return newStats
     }
     
     private func createStats(confirmedTotalCount: Int, confirmedDifferenceCount: Int, activeTotalCount: Int, activeDifferenceCount: Int, recoveredTotalCount: Int, recoveredDifferenceCount: Int, deathsTotalCount: Int, deathsDifferenceCount: Int) -> [StatsData] {
