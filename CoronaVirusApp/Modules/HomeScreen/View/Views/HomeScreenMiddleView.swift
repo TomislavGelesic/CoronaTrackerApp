@@ -30,7 +30,7 @@ class HomeScreenMiddleView: UIView {
     }()
     
     let confirmedCaseView: StatusCaseView = {
-        let view = StatusCaseView()
+        let view = StatusCaseView(contentColor: .systemRed)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.titleLabel.text = "confirmed".uppercased()
         view.graphImageView.image = UIImage(named: "graph-homescreen")
@@ -38,7 +38,7 @@ class HomeScreenMiddleView: UIView {
     }()
     
     let activeCaseView: StatusCaseView = {
-        let view = StatusCaseView()
+        let view = StatusCaseView(contentColor: .systemBlue)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.titleLabel.text = "active".uppercased()
         view.graphImageView.image = UIImage(named: "graph-homescreen")
@@ -46,7 +46,7 @@ class HomeScreenMiddleView: UIView {
     }()
     
     let recoveredCaseView: StatusCaseView = {
-        let view = StatusCaseView()
+        let view = StatusCaseView(contentColor: .systemGreen)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.titleLabel.text = "recovered".uppercased()
         view.graphImageView.image = UIImage(named: "graph-up-homescreen")
@@ -54,7 +54,7 @@ class HomeScreenMiddleView: UIView {
     }()
     
     let deathsCaseView: StatusCaseView = {
-        let view = StatusCaseView()
+        let view = StatusCaseView(contentColor: .systemGray)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.titleLabel.text = "deceased".uppercased()
         view.graphImageView.image = UIImage(named: "graph-down-homescreen")

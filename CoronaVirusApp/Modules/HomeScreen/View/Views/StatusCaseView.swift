@@ -18,7 +18,8 @@ class StatusCaseView: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.alignment = .center
-        stackView.distribution = .fillProportionally
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 10
         return stackView
     }()
 
@@ -65,38 +66,50 @@ class StatusCaseView: UIView {
         return imageView
     }()
     
-    init() {
+    init(contentColor color: UIColor) {
         super.init(frame: .zero)
-        backgroundColor = .backgroundColorSecond
+        setupAppearance(contentColor: color)
         differenceContainer.addSubviews([differenceArrowImageView, differenceCountLabel])
         horizontalStackView.addArrangedSubviews([totalCountLabel, differenceContainer])
         verticalStackView.addArrangedSubviews([titleLabel, horizontalStackView, graphImageView])
         addSubview(verticalStackView)
         setConstraints()
     }
-    
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    
+    private func setupAppearance(contentColor color: UIColor) {
+        totalCountLabel.textColor = color
+        differenceCountLabel.textColor = color
+        differenceArrowImageView.tintColor = color
+        graphImageView.tintColor = color
+        backgroundColor = .backgroundColorSecond
+    }
     
     func configure(with item: StatsData) {
         var arrowImage: UIImage? = .init()
         var graphImage: UIImage? = .init()
-        if item.delta > 0 {
-            graphImage = UIImage(named: "graph-up-homescreen")
-            arrowImage = UIImage(systemName: "arrow.up")
-        } else {
-            graphImage = UIImage(named: "graph-down-homescreen")
-            arrowImage = UIImage(systemName: "arrow.down")
+        switch item.delta {
+        case 0:
+            graphImage = .graphNeutralSlope
+            arrowImage = .arrowRight
+        case 1...17:
+            graphImage = .graphPositiveSlope1
+            arrowImage = .arrowUp
+        case 17...Int.max:
+            graphImage = .graphPositiveSlope2
+            arrowImage = .arrowUp
+        default:
+            graphImage = .graphNegativeSlope
+            arrowImage = .arrowDown
         }
         differenceCountLabel.text = "\(NumberUtils.getPositiveNumberWithMetricPrefixSymbol(item.delta))"
         totalCountLabel.text = "\(NumberUtils.getPositiveNumberWithMetricPrefixSymbol(item.value))"
         differenceArrowImageView.image = arrowImage
-        graphImageView.image = graphImage
+        graphImageView.image = graphImage?.withRenderingMode(.alwaysTemplate)
     }
     
     func setConstraints() {
-        verticalStackView.snp.makeConstraints { (make) in
-            make.edges.equalToSuperview().inset(10)
-        }
+        verticalStackView.snp.makeConstraints { (make) in make.edges.equalToSuperview().inset(10) }
         titleLabel.snp.makeConstraints { make in make.height.equalTo(30)}
         totalCountLabel.snp.makeConstraints { make in make.height.equalTo(30) }
         differenceArrowImageView.snp.makeConstraints { make in
